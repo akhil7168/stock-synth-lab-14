@@ -14,6 +14,9 @@ import { StockComparison } from "@/components/StockComparison";
 import { TopMovers } from "@/components/TopMovers";
 import { IndexPerformance } from "@/components/IndexPerformance";
 import { CompanyProfile } from "@/components/CompanyProfile";
+import { PredictionForm } from "@/components/PredictionForm";
+import { StockChart } from "@/components/StockChart";
+import { ModelComparison } from "@/components/ModelComparison";
 
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState<string>("");
@@ -95,7 +98,7 @@ const Index = () => {
 
         {/* Main Trading Dashboard */}
         <Tabs defaultValue="live" className="w-full">
-          <TabsList className="grid w-full grid-cols-7 bg-trading-panel border border-trading-border">
+          <TabsList className="grid w-full grid-cols-8 bg-trading-panel border border-trading-border">
             <TabsTrigger value="live" className="flex items-center gap-2">
               <Zap className="w-4 h-4" />
               Live
@@ -111,6 +114,10 @@ const Index = () => {
             <TabsTrigger value="comparison" className="flex items-center gap-2">
               <PieChart className="w-4 h-4" />
               Compare
+            </TabsTrigger>
+            <TabsTrigger value="predictions" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              AI Predict
             </TabsTrigger>
             <TabsTrigger value="movers" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
@@ -140,6 +147,18 @@ const Index = () => {
 
           <TabsContent value="comparison" className="space-y-6 mt-6">
             <StockComparison />
+          </TabsContent>
+
+          <TabsContent value="predictions" className="space-y-6 mt-6">
+            <div className="grid gap-6">
+              <PredictionForm onSubmit={handlePrediction} isLoading={isLoading} />
+              {predictions && (
+                <>
+                  <StockChart data={predictions} />
+                  <ModelComparison data={predictions} />
+                </>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="movers" className="space-y-6 mt-6">
