@@ -6,11 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, Activity, Brain, BarChart3, PieChart } from "lucide-react";
-import { StockChart } from "@/components/StockChart";
-import { ModelComparison } from "@/components/ModelComparison";
-import { PredictionForm } from "@/components/PredictionForm";
-import { StatsCards } from "@/components/StatsCards";
+import { TrendingUp, TrendingDown, Activity, Brain, BarChart3, PieChart, Zap, Globe } from "lucide-react";
+import { LivePrices } from "@/components/LivePrices";
+import { CandlestickChart } from "@/components/CandlestickChart";
+import { TechnicalIndicators } from "@/components/TechnicalIndicators";
+import { StockComparison } from "@/components/StockComparison";
+import { TopMovers } from "@/components/TopMovers";
+import { IndexPerformance } from "@/components/IndexPerformance";
+import { CompanyProfile } from "@/components/CompanyProfile";
 
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState<string>("");
@@ -87,120 +90,70 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <StatsCards />
+        {/* Live Prices */}
+        <LivePrices />
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Prediction Form */}
-          <div className="lg:col-span-1">
-            <PredictionForm onSubmit={handlePrediction} isLoading={isLoading} />
-          </div>
+        {/* Main Trading Dashboard */}
+        <Tabs defaultValue="live" className="w-full">
+          <TabsList className="grid w-full grid-cols-7 bg-trading-panel border border-trading-border">
+            <TabsTrigger value="live" className="flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Live
+            </TabsTrigger>
+            <TabsTrigger value="candlestick" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Charts
+            </TabsTrigger>
+            <TabsTrigger value="technical" className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Technical
+            </TabsTrigger>
+            <TabsTrigger value="comparison" className="flex items-center gap-2">
+              <PieChart className="w-4 h-4" />
+              Compare
+            </TabsTrigger>
+            <TabsTrigger value="movers" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Movers
+            </TabsTrigger>
+            <TabsTrigger value="indices" className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              Indices
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              Profile
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Charts and Results */}
-          <div className="lg:col-span-2 space-y-6">
-            {predictions ? (
-              <Tabs defaultValue="chart" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 bg-card border border-border">
-                  <TabsTrigger value="chart" className="flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    Price Chart
-                  </TabsTrigger>
-                  <TabsTrigger value="comparison" className="flex items-center gap-2">
-                    <PieChart className="w-4 h-4" />
-                    Model Comparison
-                  </TabsTrigger>
-                  <TabsTrigger value="metrics" className="flex items-center gap-2">
-                    <Brain className="w-4 h-4" />
-                    Metrics
-                  </TabsTrigger>
-                </TabsList>
+          <TabsContent value="live" className="space-y-6 mt-6">
+            <TopMovers />
+          </TabsContent>
 
-                <TabsContent value="chart" className="space-y-4">
-                  <StockChart data={predictions} />
-                </TabsContent>
+          <TabsContent value="candlestick" className="space-y-6 mt-6">
+            <CandlestickChart />
+          </TabsContent>
 
-                <TabsContent value="comparison" className="space-y-4">
-                  <ModelComparison data={predictions} />
-                </TabsContent>
+          <TabsContent value="technical" className="space-y-6 mt-6">
+            <TechnicalIndicators />
+          </TabsContent>
 
-                <TabsContent value="metrics" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* LSTM Metrics */}
-                    <Card className="border-border/50 shadow-card">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Brain className="w-5 h-5 text-chart-1" />
-                          LSTM Model
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Accuracy</span>
-                          <span className="font-semibold text-success">{predictions.predictions.lstm.accuracy}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">RMSE</span>
-                          <span className="font-semibold">{predictions.predictions.lstm.rmse}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">MAE</span>
-                          <span className="font-semibold">{predictions.predictions.lstm.mae}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Training Time</span>
-                          <span className="font-semibold">{predictions.predictions.lstm.trainingTime}s</span>
-                        </div>
-                      </CardContent>
-                    </Card>
+          <TabsContent value="comparison" className="space-y-6 mt-6">
+            <StockComparison />
+          </TabsContent>
 
-                    {/* RNN Metrics */}
-                    <Card className="border-border/50 shadow-card">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Activity className="w-5 h-5 text-chart-2" />
-                          RNN Model
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Accuracy</span>
-                          <span className="font-semibold text-success">{predictions.predictions.rnn.accuracy}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">RMSE</span>
-                          <span className="font-semibold">{predictions.predictions.rnn.rmse}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">MAE</span>
-                          <span className="font-semibold">{predictions.predictions.rnn.mae}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Training Time</span>
-                          <span className="font-semibold">{predictions.predictions.rnn.trainingTime}s</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            ) : (
-              <Card className="border-border/50 shadow-card">
-                <CardContent className="flex items-center justify-center h-96">
-                  <div className="text-center space-y-4">
-                    <Activity className="w-16 h-16 text-muted-foreground mx-auto" />
-                    <div>
-                      <h3 className="text-lg font-semibold">No Predictions Yet</h3>
-                      <p className="text-muted-foreground">
-                        Select a stock symbol and model to start generating predictions
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
+          <TabsContent value="movers" className="space-y-6 mt-6">
+            <TopMovers />
+          </TabsContent>
+
+          <TabsContent value="indices" className="space-y-6 mt-6">
+            <IndexPerformance />
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-6 mt-6">
+            <CompanyProfile />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

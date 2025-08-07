@@ -67,6 +67,14 @@ export default {
 					'4': 'hsl(var(--chart-4))',
 					'5': 'hsl(var(--chart-5))'
 				},
+				bullish: 'hsl(var(--bullish))',
+				bearish: 'hsl(var(--bearish))',
+				neutral: 'hsl(var(--neutral))',
+				'trading-panel': 'hsl(var(--trading-panel))',
+				'trading-border': 'hsl(var(--trading-border))',
+				'price-up': 'hsl(var(--price-up))',
+				'price-down': 'hsl(var(--price-down))',
+				'price-neutral': 'hsl(var(--price-neutral))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -80,11 +88,16 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-secondary': 'var(--gradient-secondary)'
+				'gradient-secondary': 'var(--gradient-secondary)',
+				'gradient-trading': 'var(--gradient-trading)',
+				'gradient-bullish': 'var(--gradient-bullish)',
+				'gradient-bearish': 'var(--gradient-bearish)'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
-				'card': 'var(--shadow-card)'
+				'card': 'var(--shadow-card)',
+				'trading': 'var(--shadow-trading)',
+				'neon': 'var(--shadow-neon)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
